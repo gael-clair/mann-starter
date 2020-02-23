@@ -1,0 +1,104 @@
+name: "Package: Frontend"
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - "packages/frontend/**"
+  pull_request:
+    paths:
+      - "packages/frontend/**"
+
+env:
+  NODE_VERSION: "12.x"
+
+jobs:
+  frontend:
+    name: Checks (build, lint, test)
+    runs-on: ubuntu-latest
+    env:
+      FOLDER: packages/frontend
+      COVERAGE_FOLDER: packages/frontend/coverage
+      REPORTS_FOLDER: packages/frontend/reports
+      BUILD_FOLDER: packages/frontend/dist
+      PACKAGE: frontend
+      CODECOV_CONFIG: ./codecov.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Check cache of yarn dependencies
+        uses: actions/cache@v1
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn workspace $PACKAGE build
+
+      - name: Create reports folder
+        run: mkdir $REPORTS_FOLDER
+
+      - name: Lint code
+        run: yarn workspace $PACKAGE lint:ci
+
+      - name: Lint style
+        run: yarn workspace $PACKAGE lint:style:ci
+
+      - name: Run unit tests with coverage
+        run: yarn workspace $PACKAGE test:ci
+
+      - name: Upload unit tests coverage report to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ${{ env.COVERAGE_FOLDER }}/ut/lcov.info
+          flags: unit
+          yml: ${{ env.CODECOV_CONFIG }}
+          fail_ci_if_error: true
+
+      - name: Run End-to-End testing with coverage
+        run: yarn workspace $PACKAGE e2e:ci
+
+      - name: Upload End-to-End tests coverage report to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ${{ env.COVERAGE_FOLDER }}/e2e/coverage-remaped.json
+          flags: e2e
+          yml: ${{ env.CODECOV_CONFIG }}
+          fail_ci_if_error: true
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v1
+        with:
+          name: frontend-coverage
+          path: ${{ env.COVERAGE_FOLDER }}
+
+      - name: Upload tests results reports
+        uses: actions/upload-artifact@v1
+        with:
+          name: frontend-reports
+          path: ${{ env.REPORTS_FOLDER }}
+
+      - name: Upload build result
+        uses: actions/upload-artifact@v1
+        with:
+          name: frontend-build
+          path: ${{ env.BUILD_FOLDER }}

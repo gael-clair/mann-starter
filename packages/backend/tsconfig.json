@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@app/core/*": ["src/core/*"],
+      "@app/core": ["src/core"],
+      "@app/resources/*": ["src/resources/*"],
+      "@app/resources": ["src/resources"],
+      "@app/api/*": ["src/api/*"],
+      "@app/api": ["src/api"],
+      "@app/logger/*": ["src/logger/*"],
+      "@app/logger": ["src/logger"],
+      "@app/environments/*": ["src/environments/*"],
+      "@app/environments": ["src/environments"],
+      "@test/mocks": ["test/spec/__mocks__"],
+      "@test/mocks/*": ["test/spec/__mocks__/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "coverage", "reports"]
+}

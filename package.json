@@ -1,0 +1,62 @@
+{
+  "name": "mann-starter",
+  "version": "0.0.0",
+  "description": "The MongoDB Angular Nodejs Nestjs (MANN) stack starter",
+  "repository": "https://github.com/g-clair/mann-starter",
+  "author": "Gaël Clair",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"yarn workspace backend run start:dev\" \"yarn workspace frontend run start\"",
+    "format": "yarn workspaces run format",
+    "build": "yarn workspaces run build",
+    "lint": "yarn workspaces run lint",
+    "lint:fix": "yarn workspaces run lint:fix",
+    "test": "yarn workspaces run test",
+    "test:ci": "yarn workspaces run test:ci",
+    "e2e": "yarn workspaces run e2e",
+    "e2e:ci": "yarn workspaces run e2e:ci",
+    "commit": "lint-staged && git-cz --no-verify"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "commitizen": "^4.0.3",
+    "concurrently": "^5.1.0",
+    "cz-conventional-changelog": "^3.1.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.7"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{json,css,sass,scss,less,html,graphql,yml}": "prettier --write",
+    "packages/backend/**/*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "eslint -c packages/backend/.eslintrc.js --parser-options=project:packages/backend/tsconfig.json --fix"
+    ],
+    "packages/frontend/**/*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "tslint -c packages/frontend/tslint.json --fix"
+    ]
+  }
+}
