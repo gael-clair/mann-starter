@@ -163,7 +163,7 @@ $ yarn format
 
 ## Continuous Integration
 
-The repo includes a [Github Action](https://github.com/features/actions) configuration for continuous integration. It is also integrated with [Codecov](https://codecov.io/) during workflow process. Each package of this repo has its own package (backend and frontend).
+The repo includes a [Github Action](https://github.com/features/actions) configuration for continuous integration. It is also integrated with [Codecov](https://codecov.io/) during workflow process. Each package of this repo has its own workflow (backend: `.github/workflows/backend.yml`, frontend: `.github/workflows/frontend.yml`)
 
 ### Workflow steps
 
@@ -191,6 +191,92 @@ To be sure to pass all checks before merging a Pull Request you should add requi
 -   codecov/project/unit-tests
 -   Backend: Checks (build, lint, tests)
 -   Frontend: Checks (build, lint, tests)
+
+### Codecov configuration
+
+Codecov configuration is set using `codecov.yml` file with:
+
+```yaml
+coverage:
+  status:
+    project:
+      default: false # deactivate project report
+      unit-tests: # unit tests coverage settings
+        target: 80%
+        flags: unit
+      e2e-tests: # end-to-end tests coverage value
+        target: 65%
+        flags: e2e
+    patch: false # deactivate patch report
+
+parsers:
+  javascript:
+    enable_partials: yes # activate partial line coverage in javascript files
+```
+
+## Git hook
+
+One pre-commit git hook is activated with [Husky](https://github.com/typicode/husky) to call packages scripts to format and lint files to be commited.
+
+One commit-msg git hook is set to let [@commitlint/cli](https://commitlint.js.org/) lint commit message to ensure that it follows conventional-changelog format.
+
+To configure git hooks:
+
+1.  Add husky and commitlint dependencies:
+
+```sh
+yarn add -D -W husky @commitlint/cli @commitlint/config-conventional
+```
+
+2.  Add commitlint configuration to `package.json`:
+
+```json
+"commitlint": {
+  "extends": [
+    "@commitlint/config-conventional"
+  ]
+}
+```
+
+2.  Add husky configuration to `package.json`:
+
+```json
+"husky": {
+  "hooks": {
+    "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+    "pre-commit": "yarn workspaces run precommit"
+  }
+}
+```
+
+## Dependencies
+
+Git hook:
+
+-   [husky](https://github.com/typicode/husky)
+-   [@commitlint/cli](https://commitlint.js.org/)
+-   [@commitlint/config-conventional](https://www.npmjs.com/package/@commitlint/config-conventional)
+
+```sh
+yarn add -D -W husky @commitlint/cli @commitlint/config-conventional
+```
+
+Git tools:
+
+-   [commitizen](https://www.npmjs.com/package/commitizen)
+-   [cz-conventional-changelog](https://www.npmjs.com/package/cz-conventional-changelog)
+
+```sh
+yarn add -D -W commitizen cz-conventional-changelog
+```
+
+Development:
+
+-   [concurrently](https://www.npmjs.com/package/concurrently)
+
+```sh
+yarn add -D -W concurrently
+```
 
 ## Licence
 

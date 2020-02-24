@@ -16,7 +16,7 @@
     "test:ci": "yarn workspaces run test:ci",
     "e2e": "yarn workspaces run e2e",
     "e2e:ci": "yarn workspaces run e2e:ci",
-    "commit": "lint-staged && git-cz --no-verify"
+    "commit": "yarn workspaces run precommit && git-cz --no-verify"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
@@ -24,9 +24,7 @@
     "commitizen": "^4.0.3",
     "concurrently": "^5.1.0",
     "cz-conventional-changelog": "^3.1.0",
-    "husky": "^4.2.3",
-    "lerna": "^3.20.2",
-    "lint-staged": "^10.0.7"
+    "husky": "^4.2.3"
   },
   "workspaces": {
     "packages": [
@@ -46,7 +44,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn workspaces run lint-staged"
+      "pre-commit": "yarn workspaces run precommit"
     }
   }
 }

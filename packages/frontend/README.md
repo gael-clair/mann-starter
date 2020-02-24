@@ -8,6 +8,11 @@
 -   [End-to-End tests with Jest and Puppeteer](#end-to-end-tests-with-jest-and-puppeteer)
 -   [Formatting with Prettier](#formatting-with-prettier)
 -   [Style linting with Stylelint](#style-linting-with-stylelint)
+-   [How to add a new REST resource](#how-to-add-a-new-rest-resource)
+    -   [Resource Item interface](#resource-item-interface)
+    -   [Resource class](#resource-class)
+    -   [Resource creation](#resource-creation)
+-   [Git hook](#git-hook)
 -   [Dependencies](#dependencies)
     -   [Yarn hoisting](#yarn-hoisting)
     -   [Added](#added)
@@ -419,6 +424,32 @@ export * from './resource_name';
 import { RESOURCE } from './resource_name';
 
 export { RESOURCE };
+```
+
+## Git hook
+
+One pre-commit git hook is activated by global [Husky](https://github.com/typicode/husky) to call [lint-staged](https://github.com/okonet/lint-staged) to format and lint files to be commited. If one operation fails commit is canceled. 
+
+To configure lint-staged you have to:
+
+1.  Create a script in `package.json` (it will be called by global husky pre-commit hook):
+
+```json
+{
+  "scripts": {
+    "precommit": "lint-staged"
+  }
+}
+```
+
+2.  Create a file `.lintstagedrc` with JSON configuration:
+
+```json
+{
+  "src/**/*.{json,css,sass,scss,less,html,graphql,yml}": "prettier --write",
+  "src/**/*.{ts,tsx,js,jsx}": ["prettier --write", "tslint --fix"]
+
+}
 ```
 
 ## Dependencies

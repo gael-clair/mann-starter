@@ -11,12 +11,15 @@
     -   [Transports](#transports)
     -   [Configuration](#configuration)
     -   [Creation](#creation)
--   [How to add a new resource (model)](#how-to-add-a-new-resource-model)
+    -   [Log API](#log-api)
+-   [Resource (model)](#resource-model)
     -   [Resource class](#resource-class)
     -   [Resource creation](#resource-creation)
+    -   [CRUD resource API](#crud-resource-api)
 -   [Static content](#static-content)
 -   [Cross-origin resource sharing](#cross-origin-resource-sharing)
 -   [HTTPS/SSL](#httpsssl)
+-   [Git hook](#git-hook)
 -   [Dependencies](#dependencies)
     -   [Yarn hoisting](#yarn-hoisting)
     -   [Added](#added)
@@ -397,6 +400,31 @@ SSL_KEY_FILE = 'SSL key file path'
 SSL_CERT_FILE = 'SSL certificate file path'
 ```
 
+## Git hook
+
+One pre-commit git hook is activated by global [Husky](https://github.com/typicode/husky) to call [lint-staged](https://github.com/okonet/lint-staged) to format and lint files to be commited. If one operation fails commit is canceled. 
+
+To configure lint-staged you have to:
+
+1.  Create a script in `package.json` (it will be called by global husky pre-commit hook):
+
+```json
+{
+  "scripts": {
+    "precommit": "lint-staged"
+  }
+}
+```
+
+2.  Create a file `.lintstagedrc` with JSON configuration:
+
+```json
+{
+  "src/**/*.{json,graphql,yml}": "prettier --write",
+  "src/**/*.{ts,tsx,js,jsx}": ["prettier --write", "eslint --fix"]
+}
+```
+
 ## Dependencies
 
 ### Yarn hoisting
@@ -485,11 +513,19 @@ Linting:
 $ yarn add -D eslint-import-resolver-typescript
 ```
 
-Documentation
+Documentation:
 
 -   [typedoc](https://www.npmjs.com/package/typedoc)
 -   [typedoc-hopper-theme](https://www.npmjs.com/package/typedoc-hopper-theme)
 
 ```sh
 $ yarn add -D typedoc typedoc-hopper-theme
+```
+
+Git hook:
+
+-   [lint-staged](https://github.com/okonet/lint-staged)
+
+```sh
+$ yarn add -D lint-staged
 ```
