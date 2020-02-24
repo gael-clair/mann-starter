@@ -2,24 +2,24 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [NestJS](#nestjs)
-- [Unit tests with Jest](#unit-tests-with-jest)
-- [End-to-End tests](#end-to-end-tests)
-- [Linting](#linting)
-- [Logging](#logging)
-  - [Format](#format)
-  - [Transports](#transports)
-  - [Configuration](#configuration)
-  - [Creation](#creation)
-- [How to add a new resource (model)](#how-to-add-a-new-resource-model)
-  - [Resource class](#resource-class)
-  - [Resource creation](#resource-creation)
-- [Static content](#static-content)
-- [Cross-origin resource sharing](#cross-origin-resource-sharing)
-- [HTTPS/SSL](#httpsssl)
-- [Dependencies](#dependencies)
-  - [Yarn hoisting](#yarn-hoisting)
-  - [Added](#added)
+-   [NestJS](#nestjs)
+-   [Unit tests with Jest](#unit-tests-with-jest)
+-   [End-to-End tests](#end-to-end-tests)
+-   [Linting](#linting)
+-   [Logging](#logging)
+    -   [Format](#format)
+    -   [Transports](#transports)
+    -   [Configuration](#configuration)
+    -   [Creation](#creation)
+-   [How to add a new resource (model)](#how-to-add-a-new-resource-model)
+    -   [Resource class](#resource-class)
+    -   [Resource creation](#resource-creation)
+-   [Static content](#static-content)
+-   [Cross-origin resource sharing](#cross-origin-resource-sharing)
+-   [HTTPS/SSL](#httpsssl)
+-   [Dependencies](#dependencies)
+    -   [Yarn hoisting](#yarn-hoisting)
+    -   [Added](#added)
 
 ## NestJS
 
@@ -33,19 +33,19 @@ $ npx @nestjs/cli new backend --package-manager=yarn
 
 Unit testing is based initially on the use of Karma/Jasmine but this project uses Jest instead. To add Jest:
 
-1. Create test folder for unit tests at project root:
+1.  Create test folder for unit tests at project root:
 
 ```sh
 $ mkdir -p "test/spec/src"
 ```
 
-2. Install Jest Junit dependency
+2.  Install Jest Junit dependency
 
 ```sh
 $ yarn add -D jest-junit
 ```
 
-3. Create _test/spec/jest.config.js_ file with:
+3.  Create _test/spec/jest.config.js_ file with:
 
 ```javascript
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
@@ -76,9 +76,9 @@ module.exports = {
 };
 ```
 
-4. Move all your spec files in _test/spec/src_
+4.  Move all your spec files in _test/spec/src_
 
-5. Update test scripts in _package.json_ with:
+5.  Update test scripts in _package.json_ with:
 
 ```json
 {
@@ -96,13 +96,13 @@ module.exports = {
 
 ## End-to-End tests
 
-1. Create E2E tests folder:
+1.  Create E2E tests folder:
 
 ```sh
 $ mkdir -p "test/e2e/src"
 ```
 
-2. Create _test/e2e/jest.config.js_ file with:
+2.  Create _test/e2e/jest.config.js_ file with:
 
 ```javascript
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -135,9 +135,9 @@ module.exports = {
 };
 ```
 
-3. Move all e2e-spec files to _test/e2e/src_
+3.  Move all e2e-spec files to _test/e2e/src_
 
-4. Update test scripts in _package.json_ with:
+4.  Update test scripts in _package.json_ with:
 
 ```json
 {
@@ -244,7 +244,46 @@ constructor(@Logger("logger1") private readonly _logger: LoggerService, ...) {}
 
 This will create a new logger with name `logger1` that will log in a file with name `logger1-timestamp.log`. If you inject multiple times a logger with the same name, only one logger will be created.
 
-## How to add a new resource (model)
+### Log API
+
+REST API endpoints are available to read application logs at `/api/logs`. Some optional search parameters could be sent to filter lines as query parameters. They will parsed to this DTO:
+
+```typescript
+/**
+ * Search criteria DTO for log query.
+ */
+export class LogQueryDto {
+  /**
+   * Starting date.
+   */
+  public from?: number;
+
+  /**
+   * Limit date.
+   */
+  public until?: number;
+
+  /**
+   * Sort order of lines.
+   */
+  public order?: string;
+
+  /**
+   * Number of lines.
+   */
+  public limit?: number;
+}
+```
+
+Log endpoints:
+
+-   GET    `/api/logs/list`: Gets all available loggers name
+-   GET    `/api/logs`: Gets global logger log lines corresponding to query parameters
+-   GET    `/api/logs/{number_of_lines}`: Gets number_of_lines global logger log lines corresponding to query parameters
+-   GET    `/api/logs/sub/{logger}`: Gets logger log lines corresponding to query parameters
+-   GET    `/api/logs/sub/{logger}/{number_of_lines}`: Gets number_of_lines logger log lines corresponding to query parameters
+
+## Resource (model)
 
 ### Resource class
 
@@ -277,8 +316,8 @@ export class Resource {
 
 To add a new resource, or mongoose model, you have to:
 
-- Create a new file for resource `src/resources/name_of_resource.ts`
-- Create resource interface extending Mongoose Document in resource file
+1.  Create a new file for resource `src/resources/resource_name.ts`
+2.  Create resource interface extending Mongoose Document in resource file
 
 ```typescript
 /**
@@ -292,7 +331,7 @@ export interface Sample extends Document {
 }
 ```
 
-- Create Mongoose schema in resource file
+3.  Create Mongoose schema in resource file
 
 ```typescript
 /**
@@ -305,19 +344,31 @@ export const SampleSchema: Schema<Sample> = new Schema({
 });
 ```
 
-- Create a new Resource using [resource class](#resource-class) constructor in resource file
+4.  Create a new Resource using [resource class](#resource-class) constructor in resource file
 
 ```typescript
 export const RESOURCE = new Resource('Samples', SampleSchema, 'samples');
 ```
 
-- Add export of resource in `src/resources/index.ts` file (to let the new resource be handled by resource module)
+5.  Add export of resource in `src/resources/index.ts` file (to let the new resource be handled by resource module)
 
 ```typescript
-import { RESOURCE } from './name_of_resource';
+import { RESOURCE } from './resource_name';
 
 export { RESOURCE };
 ```
+
+### CRUD resource API
+
+For each resource, endpoints are automatically created for CRUD operations. These endpoints are available at `/api/resources/resource_name`:
+
+-   POST    /api/resources/{resource_name}:       Creates an item
+-   GET     /api/resources/{resource_name}/{ID}:  Gets item with id ID
+-   PUT     /api/resources/{resource_name}/{ID}:  Update item with id ID
+-   DELETE  /api/resources/{resource_name}/{ID}:  Deletes item with id ID 
+-   GET     /api/resources/{resource_name}:       List all items
+-   POST    /api/resources/{resource_name}/find:  Searches for one item with criteria
+-   POST    /api/resources/resource_name/search:  Searches for multiple items with criteria
 
 ## Static content
 
@@ -365,50 +416,80 @@ Some dependencies need to be available in the local node_modules folder, to do s
 
 Testing:
 
-- [jest-junit](https://www.npmjs.com/package/jest-junit)
+-   [jest-junit](https://www.npmjs.com/package/jest-junit)
+
+```sh
+$ yarn add -D jest-junit
+```
 
 Logging:
 
-- [winston](https://www.npmjs.com/package/winston)
-- [winston-daily-rotate-file](https://www.npmjs.com/package/winston-daily-rotate-file)
+-   [winston](https://www.npmjs.com/package/winston)
+-   [winston-daily-rotate-file](https://www.npmjs.com/package/winston-daily-rotate-file)
+
+```sh
+$ yarn add winston winston-daily-rotate-file
+```
 
 Configuration:
 
-- [dotenv](https://www.npmjs.com/package/dotenv)
-- [@hapi/joi](https://www.npmjs.com/package/@hapi/joi)
+-   [dotenv](https://www.npmjs.com/package/dotenv)
+-   [@hapi/joi](https://www.npmjs.com/package/@hapi/joi)
+
+```sh
+$ yarn add dotenv @hapi/joi
+```
 
 Tools:
 
-- [fs-extra](https://www.npmjs.com/package/fs-extra)
-- [moment](https://www.npmjs.com/package/moment)
-- [class-validator](https://www.npmjs.com/package/class-validator)
-- [class-transformer](https://www.npmjs.com/package/class-transformer)
+-   [fs-extra](https://www.npmjs.com/package/fs-extra)
+-   [moment](https://www.npmjs.com/package/moment)
+-   [class-validator](https://www.npmjs.com/package/class-validator)
+-   [class-transformer](https://www.npmjs.com/package/class-transformer)
+
+```sh
+$ yarn add fs-extra moment class-validator class-transformer
+```
 
 Routing:
 
-- [nest-router](https://www.npmjs.com/package/nest-router)
+-   [nest-router](https://www.npmjs.com/package/nest-router)
+
+```sh
+$ yarn add nest-router
+```
 
 Database:
 
-- [mongoose](https://www.npmjs.com/package/mongoose)
-- [@nestjs/mongoose](https://www.npmjs.com/package/@nestjs/mongoose)
+-   [mongoose](https://www.npmjs.com/package/mongoose)
+-   [@nestjs/mongoose](https://www.npmjs.com/package/@nestjs/mongoose)
+
+```sh
+$ yarn add mongoose @nestjs/mongoose
+```
 
 Server:
 
-- [compression](https://www.npmjs.com/package/compression)
-- [helmet](https://www.npmjs.com/package/helmet)
+-   [compression](https://www.npmjs.com/package/compression)
+-   [helmet](https://www.npmjs.com/package/helmet)
+
+```sh
+$ yarn add compression helmet
+```
 
 Linting:
 
-- [eslint-import-resolver-typescript](https://www.npmjs.com/package/eslint-import-resolver-typescript)
+-   [eslint-import-resolver-typescript](https://www.npmjs.com/package/eslint-import-resolver-typescript)
+
+```sh
+$ yarn add -D eslint-import-resolver-typescript
+```
 
 Documentation
 
-- [typedoc](https://www.npmjs.com/package/typedoc)
-- [typedoc-hopper-theme](https://www.npmjs.com/package/typedoc-hopper-theme)
+-   [typedoc](https://www.npmjs.com/package/typedoc)
+-   [typedoc-hopper-theme](https://www.npmjs.com/package/typedoc-hopper-theme)
 
 ```sh
-$ yarn add jest-junit compression fs-extra helmet nest-router mongoose moment winston winston-daily-rotate-file dotenv @hapi/joi @nestjs/mongoose class-validator class-transformer
-
-$ yarn add -D jest-junit eslint-import-resolver-typescript typedoc typedoc-hopper-theme
+$ yarn add -D typedoc typedoc-hopper-theme
 ```

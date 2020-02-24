@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "lint-staged": "lint-staged",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "build:prod": "ng build --prod",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "doc": "typedoc ./src",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "lint:ci": "ng lint --format junit > ./reports/lint.xml",
@@ -27,15 +29,17 @@
   },
   "dependencies": {
     "@angular/animations": "~9.0.1",
-    "@angular/cdk": "^9.0.0",
+    "@angular/cdk": "^9.0.1",
     "@angular/common": "~9.0.1",
     "@angular/compiler": "~9.0.1",
     "@angular/core": "~9.0.1",
     "@angular/forms": "~9.0.1",
-    "@angular/material": "^9.0.0",
+    "@angular/material": "^9.0.1",
     "@angular/platform-browser": "~9.0.1",
     "@angular/platform-browser-dynamic": "~9.0.1",
     "@angular/router": "~9.0.1",
+    "@hapi/joi": "^17.1.0",
+    "hammerjs": "^2.0.8",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
@@ -71,6 +75,8 @@
     "tsconfig-paths": "^3.9.0",
     "tslint": "~5.18.0",
     "tslint-config-prettier": "^1.18.0",
+    "typedoc": "^0.16.10",
+    "typedoc-hopper-theme": "^0.0.2",
     "typescript": "~3.7.5",
     "wait-on": "^4.0.0"
   },
@@ -78,7 +84,8 @@
     "nohoist": [
       "stylelint-junit-formatter",
       "@types/**",
-      "@angular/material"
+      "@angular/material",
+      "typedoc-hopper-theme"
     ]
   }
 }

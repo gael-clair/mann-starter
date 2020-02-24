@@ -3,7 +3,8 @@ import { Global, Module } from '@nestjs/common';
 import { DatabaseModule } from './database';
 
 /**
- * Core Module. It activates Database module.
+ * Core module activating:
+ * - Database module.
  */
 @Global()
 @Module({

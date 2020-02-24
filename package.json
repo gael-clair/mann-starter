@@ -25,6 +25,7 @@
     "concurrently": "^5.1.0",
     "cz-conventional-changelog": "^3.1.0",
     "husky": "^4.2.3",
+    "lerna": "^3.20.2",
     "lint-staged": "^10.0.7"
   },
   "workspaces": {
@@ -45,18 +46,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
+      "pre-commit": "yarn workspaces run lint-staged"
     }
-  },
-  "lint-staged": {
-    "*.{json,css,sass,scss,less,html,graphql,yml}": "prettier --write",
-    "packages/backend/**/*.{ts,tsx,js,jsx}": [
-      "prettier --write",
-      "eslint -c packages/backend/.eslintrc.js --parser-options=project:packages/backend/tsconfig.json --fix"
-    ],
-    "packages/frontend/**/*.{ts,tsx,js,jsx}": [
-      "prettier --write",
-      "tslint -c packages/frontend/tslint.json --fix"
-    ]
   }
 }

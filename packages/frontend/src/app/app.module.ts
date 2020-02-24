@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ApiModule } from './api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core';
 
+/**
+ * Application module activating:
+ * - App routing module
+ * - Core module
+ * - API module
+ */
 @NgModule({
+  imports: [CoreModule, AppRoutingModule, ApiModule.forRoot()],
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

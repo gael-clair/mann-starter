@@ -6,8 +6,11 @@ import { CoreModule } from '@app/core';
 import { LoggingModule } from '@app/logger';
 
 /**
- * Application module.
- * It handles application routing, core, logging and API activation.
+ * Application module activating:
+ * - Routing
+ * - Core module
+ * - Logging module
+ * - API module
  */
 @Module({
   imports: [RouterModule.forRoutes([routes]), CoreModule, LoggingModule.forRoot(), ApiModule],

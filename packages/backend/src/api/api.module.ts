@@ -5,9 +5,9 @@ import { LogModule } from './log';
 import { ResourceModule } from './resource';
 
 /**
- * REST API Module, activates:
- * - Resource Module
- * - Log Module
+ * REST API module activating:
+ * - Resource module
+ * - Log module
  */
 @Module({
   imports: [ResourceModule.forRoot(), LogModule],

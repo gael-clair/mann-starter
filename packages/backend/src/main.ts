@@ -34,7 +34,7 @@ import { AppModule } from './app.module';
  * - Starts application server
  */
 async function bootstrap(): Promise<any> {
-  const context = 'Bootsrap';
+  const context = 'Bootstrap';
   // Validates app configuration (from environment)
   validateEnvConfig();
 
@@ -68,7 +68,7 @@ async function bootstrap(): Promise<any> {
 
   // Adds global exceptions handling
   app.useGlobalFilters(new AllExceptionFilter());
-  globalLogger.info('Global exceptions filter enabled', context);
+  globalLogger.info('Global exception filter enabled', context);
 
   // Adds API controllers input validation
   app.useGlobalPipes(

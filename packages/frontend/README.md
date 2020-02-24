@@ -2,16 +2,16 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Angular](#angular)
-- [UI Design](#ui-design)
-- [Unit tests with Jest](#unit-tests-with-jest)
-- [End-to-End tests with Jest and Puppeteer](#end-to-end-tests-with-jest-and-puppeteer)
-- [Formatting with Prettier](#formatting-with-prettier)
-- [Style linting with Stylelint](#style-linting-with-stylelint)
-- [Dependencies](#dependencies)
-  - [Yarn hoisting](#yarn-hoisting)
-  - [Added](#added)
-  - [Removed (if project generated without _--minimal=true_ option)](#removed-if-project-generated-without---minimaltrue-option)
+-   [Angular](#angular)
+-   [UI Design](#ui-design)
+-   [Unit tests with Jest](#unit-tests-with-jest)
+-   [End-to-End tests with Jest and Puppeteer](#end-to-end-tests-with-jest-and-puppeteer)
+-   [Formatting with Prettier](#formatting-with-prettier)
+-   [Style linting with Stylelint](#style-linting-with-stylelint)
+-   [Dependencies](#dependencies)
+    -   [Yarn hoisting](#yarn-hoisting)
+    -   [Added](#added)
+    -   [Removed (if project generated without _--minimal=true_ option)](#removed-if-project-generated-without---minimaltrue-option)
 
 ## Angular
 
@@ -33,19 +33,19 @@ $ yarn add @angular/material @angular/cdk hammerjs
 
 Unit testing is based initially on the use of Karma/Jasmine but this project uses Jest instead. To add Jest:
 
-1. Create test folder for unit tests at project root:
+1.  Create test folder for unit tests at project root:
 
 ```sh
 $ mkdir -p "test/spec/src"
 ```
 
-2. Install Jest and related dependencies
+2.  Install Jest and related dependencies
 
 ```sh
 $ yarn add -D jest jest-preset-angular jest-junit @types/jest
 ```
 
-3. Create file _test/spec/tsconfig.json_ with:
+3.  Create file _test/spec/tsconfig.json_ with:
 
 ```json
 {
@@ -59,7 +59,7 @@ $ yarn add -D jest jest-preset-angular jest-junit @types/jest
 }
 ```
 
-4. Create _jest.config.js_ file in _test/spec_ with:
+4.  Create _jest.config.js_ file in _test/spec_ with:
 
 ```javascript
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
@@ -92,7 +92,7 @@ module.exports = {
 };
 ```
 
-5. Create file _test/spec/setupJest.ts_ with:
+5.  Create file _test/spec/setupJest.ts_ with:
 
 ```javascript
 import 'jest-preset-angular';
@@ -120,9 +120,9 @@ Object.defineProperty(document.body.style, 'transform', {
 });
 ```
 
-6. Move all your spec files in _test/spec/src_
+6.  Move all your spec files in _test/spec/src_
 
-7. Update test script in _package.json_ with:
+7.  Update test script in _package.json_ with:
 
 ```json
 {
@@ -138,37 +138,37 @@ Object.defineProperty(document.body.style, 'transform', {
 }
 ```
 
-8. If you generated the project without _--minimal=true_:
+8.  If you generated the project without _--minimal=true_:
 
-   1. Some useless files could be deleted:
+    1.  Some useless files could be deleted:
 
-   ```sh
-   $ rm tsconfig.spec.json karma.conf.js src/test.ts
-   ```
+    ```sh
+    $ rm tsconfig.spec.json karma.conf.js src/test.ts
+    ```
 
-   2. Remove Karma dependencies:
+    2.  Remove Karma dependencies:
 
-   ```sh
-   $ yarn remove karma karma-chrome-launcher karma-coverage-istanbul-reporter karma-jasmine karma-jasmine-html-reporter
-   ```
+    ```sh
+    $ yarn remove karma karma-chrome-launcher karma-coverage-istanbul-reporter karma-jasmine karma-jasmine-html-reporter
+    ```
 
-   1. Remove Angular test target in _angular.json > projects > frontend > architect > test_
+    1.  Remove Angular test target in _angular.json > projects > frontend > architect > test_
 
 ## End-to-End tests with Jest and Puppeteer
 
-1. Install Jest and related dependencies
+1.  Install Jest and related dependencies
 
 ```sh
 $ yarn add -D jest jest-junit jest-puppeteer jest-puppeteer-istanbul ngx-build-plus puppeteer wait-on concurrently istanbul-instrumenter-loader remap-istanbul @types/expect-puppeteer @types/jest-environment-puppeteer @types/puppeteer @types/jest
 ```
 
-3. Create E2E tests folder:
+3.  Create E2E tests folder:
 
 ```sh
 $ mkdir -p "test/e2e/src"
 ```
 
-4. Create _test/e2e/tsconfig.json_ with:
+4.  Create _test/e2e/tsconfig.json_ with:
 
 ```json
 {
@@ -182,7 +182,7 @@ $ mkdir -p "test/e2e/src"
 }
 ```
 
-5. Create _jest.config.js_ file in _test/e2e_ with:
+5.  Create _jest.config.js_ file in _test/e2e_ with:
 
 ```javascript
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -217,7 +217,7 @@ module.exports = {
 };
 ```
 
-6. Add _test/e2e/coverage.webpack.js_ file with:
+6.  Add _test/e2e/coverage.webpack.js_ file with:
 
 ```javascript
 module.exports = {
@@ -236,7 +236,7 @@ module.exports = {
 };
 ```
 
-7. Add or update _angular.json_ at _angular.json > projects > frontend > architect > serve_ with:
+7.  Add or update _angular.json_ at _angular.json > projects > frontend > architect > serve_ with:
 
 ```json
 {
@@ -259,7 +259,7 @@ module.exports = {
 }
 ```
 
-8. Create test scripts in _package.json_ to start a server and wait for server to start E2E tests (a remap is done with coverage to show coverage for original non transpiled code).
+8.  Create test scripts in _package.json_ to start a server and wait for server to start E2E tests (a remap is done with coverage to show coverage for original non transpiled code).
 
 ```json
 {
@@ -275,31 +275,31 @@ module.exports = {
 }
 ```
 
-9. If you generated project without _--minimal=true_ you could delete some file and configuration:
+9.  If you generated project without _--minimal=true_ you could delete some file and configuration:
 
-   1. Remove Angular e2e target in _angular.json > projects > frontend > architect > e2e_
+    1.  Remove Angular e2e target in _angular.json > projects > frontend > architect > e2e_
 
-   2. Remove useless protractor files:
+    2.  Remove useless protractor files:
 
-   ```sh
-   $ rm e2e/protractor.js
-   ```
+    ```sh
+    $ rm e2e/protractor.js
+    ```
 
-   1. Remove Jasmine and Protractor dependencies:
+    1.  Remove Jasmine and Protractor dependencies:
 
-   ```sh
-   $ yarn remove jasmine-core jasmine-spec-reporter protractor @types/jasmine @types/jasminewd2
-   ```
+    ```sh
+    $ yarn remove jasmine-core jasmine-spec-reporter protractor @types/jasmine @types/jasminewd2
+    ```
 
 ## Formatting with Prettier
 
-1. Install Prettier and TSLint rule preset:
+1.  Install Prettier and TSLint rule preset:
 
 ```sh
 $ yarn add -D prettier tslint-config-prettier
 ```
 
-2. Create Prettier configuration file _.prettierrc_ with:
+2.  Create Prettier configuration file _.prettierrc_ with:
 
 ```json
 {
@@ -311,7 +311,7 @@ $ yarn add -D prettier tslint-config-prettier
 }
 ```
 
-3. Add _tslint-config-prettier_ preset to _tslint.json_ to prevent TSLint to use rules that Prettier will take care of:
+3.  Add _tslint-config-prettier_ preset to _tslint.json_ to prevent TSLint to use rules that Prettier will take care of:
 
 ```json
 {
@@ -325,13 +325,13 @@ $ yarn add -D prettier tslint-config-prettier
 
 In order to add linting of style files (css and scss), [Stylelint](https://stylelint.io/) is used with some rules presets.
 
-1. Install Stylelint dependencies:
+1.  Install Stylelint dependencies:
 
 ```sh
 $ yarn add -D stylelint stylelint-config-sass-guidelines stylelint-junit-formatter stylelint-no-unsupported-browser-features
 ```
 
-2. Create Stylelint configuration _.stylelintrc.json_ file with:
+2.  Create Stylelint configuration _.stylelintrc.json_ file with:
 
 ```json
 {
@@ -348,6 +348,79 @@ $ yarn add -D stylelint stylelint-config-sass-guidelines stylelint-junit-formatt
 }
 ```
 
+## How to add a new REST resource
+
+### Resource Item interface
+
+```typescript
+/**
+ * REST resource item.
+ */
+interface ResourceItem {
+  /**
+   * ID.
+   */
+  _id: string;
+}
+```
+
+### Resource class
+
+```typescript
+/**
+ * REST API resource.
+ */
+class Resource<T extends ResourceItem> {
+  /**
+   * Returns a REST API resource.
+   * @param name resource name
+   * @param apiPath API path
+   * @param cacheable if true resource could be cached
+   */
+  constructor(public readonly name: string, public readonly apiPath: string, public readonly cacheable = true) {}
+}
+```
+
+### Resource creation
+
+To add a new resource, or mongoose model, you have to:
+
+1.  Create a new file for resource `src/resources/models/resource_name.ts`
+
+2.  Create and export resource interface extending [ResourceItem](#resource-item-interface) interface:
+
+```typescript
+/**
+ * Sample.
+ */
+export interface Sample extends ResourceItem {
+  /**
+   * Nom.
+   */
+  name: string;
+}
+```
+
+3.  Create and export resource using [Resource](#resource-class) class:
+
+```typescript
+export const SAMPLE_RESOURCE = new Resource('samples', 'samples');
+```
+
+1.  Add export of resource in `src/resources/models/index.ts`:
+
+```typescript
+export * from './resource_name';
+```
+
+5.  Add export of new resource in `src/resources/index.ts`:
+
+```typescript
+import { RESOURCE } from './resource_name';
+
+export { RESOURCE };
+```
+
 ## Dependencies
 
 ### Yarn hoisting
@@ -359,7 +432,8 @@ Some dependencies need to be available in the local node_modules folder, to do s
   "nohoist": [
     "stylelint-junit-formatter",
     "@types/**",
-    "@angular/material"
+    "@angular/material",
+    "typedoc-hopper-theme"
   ]
 }
 ```
@@ -368,37 +442,46 @@ Some dependencies need to be available in the local node_modules folder, to do s
 
 UI design:
 
-- [@angular/material](https://material.angular.io/)
-- [@angular/cdk](https://www.npmjs.com/package/@angular/cdk)
-- [hammerjs](https://hammerjs.github.io/)
+-   [@angular/material](https://material.angular.io/)
+-   [@angular/cdk](https://www.npmjs.com/package/@angular/cdk)
+-   [hammerjs](https://hammerjs.github.io/)
 
 Testing:
 
-- [jest](https://jestjs.io/)
-- [jest-junit](https://www.npmjs.com/package/jest-junit)
-- [jest-preset-angular](https://www.npmjs.com/package/jest-preset-angular)
-- [jest-puppeteer](https://www.npmjs.com/package/jest-puppeteer)
-- [jest-puppeteer-istanbul](https://www.npmjs.com/package/jest-puppeteer-istanbul)
-- [ngx-build-plus](https://www.npmjs.com/package/ngx-build-plus)
-- [puppeteer](https://pptr.dev/)
-- [remap-istanbul](https://www.npmjs.com/package/remap-istanbul)
-- [@types/expect-puppeteer](https://www.npmjs.com/package/@types/expect-puppeteer)
-- [@types/jest](https://www.npmjs.com/package/@types/jest)
-- [@types/puppeteer](https://www.npmjs.com/package/@types/puppeteer)
-- [concurrently](https://www.npmjs.com/package/concurrently)
-- [istanbul-instrumenter-loader](https://www.npmjs.com/package/istanbul-instrumenter-loader)
-- [wait-on](https://www.npmjs.com/package/wait-on)
+-   [jest](https://jestjs.io/)
+-   [jest-junit](https://www.npmjs.com/package/jest-junit)
+-   [jest-preset-angular](https://www.npmjs.com/package/jest-preset-angular)
+-   [jest-puppeteer](https://www.npmjs.com/package/jest-puppeteer)
+-   [jest-puppeteer-istanbul](https://www.npmjs.com/package/jest-puppeteer-istanbul)
+-   [ngx-build-plus](https://www.npmjs.com/package/ngx-build-plus)
+-   [puppeteer](https://pptr.dev/)
+-   [remap-istanbul](https://www.npmjs.com/package/remap-istanbul)
+-   [@types/expect-puppeteer](https://www.npmjs.com/package/@types/expect-puppeteer)
+-   [@types/jest](https://www.npmjs.com/package/@types/jest)
+-   [@types/puppeteer](https://www.npmjs.com/package/@types/puppeteer)
+-   [concurrently](https://www.npmjs.com/package/concurrently)
+-   [istanbul-instrumenter-loader](https://www.npmjs.com/package/istanbul-instrumenter-loader)
+-   [wait-on](https://www.npmjs.com/package/wait-on)
 
 ```sh
 $ yarn add -D jest jest-junit jest-preset-angular jest-puppeteer jest-puppeteer-istanbul ngx-build-plus puppeteer remap-istanbul @types/expect-puppeteer @types/jest @types/puppeteer concurrently istanbul-instrumenter-loader wait-on
 ```
 
+Documentation:
+
+-   [typedoc](https://www.npmjs.com/package/typedoc)
+-   [typedoc-hopper-theme](https://www.npmjs.com/package/typedoc-hopper-theme)
+
+```sh
+$ yarn add -D typedoc typedoc-hopper-theme
+```
+
 Linting:
 
-- [stylelint](https://stylelint.io/)
-- [stylelint-config-sass-guidelines](https://www.npmjs.com/package/stylelint-config-sass-guidelines)
-- [stylelint-junit-formatter](https://www.npmjs.com/package/stylelint-junit-formatter)
-- [stylelint-no-unsupported-browser-features](https://www.npmjs.com/package/stylelint-no-unsupported-browser-features)
+-   [stylelint](https://stylelint.io/)
+-   [stylelint-config-sass-guidelines](https://www.npmjs.com/package/stylelint-config-sass-guidelines)
+-   [stylelint-junit-formatter](https://www.npmjs.com/package/stylelint-junit-formatter)
+-   [stylelint-no-unsupported-browser-features](https://www.npmjs.com/package/stylelint-no-unsupported-browser-features)
 
 ```sh
 $ yarn add -D stylelint stylelint-config-sass-guidelines stylelint-junit-formatter stylelint-no-unsupported-browser-features
@@ -406,8 +489,8 @@ $ yarn add -D stylelint stylelint-config-sass-guidelines stylelint-junit-formatt
 
 Formatting:
 
-- [prettier](https://prettier.io/)
-- [tslint-config-prettier](https://www.npmjs.com/package/tslint-config-prettier)
+-   [prettier](https://prettier.io/)
+-   [tslint-config-prettier](https://www.npmjs.com/package/tslint-config-prettier)
 
 ```sh
 $ yarn add -D prettier tslint-config-prettier
@@ -415,16 +498,16 @@ $ yarn add -D prettier tslint-config-prettier
 
 ### Removed (if project generated without _--minimal=true_ option)
 
-- jasmine-core
-- jasmine-spec-reporter
-- karma
-- karma-chrome-launcher
-- karma-coverage-istanbul-reporter
-- karma-jasmine
-- karma-jasmine-html-reporter
-- protractor
-- @types/jasmine
-- @types/jasminewd2
+-   jasmine-core
+-   jasmine-spec-reporter
+-   karma
+-   karma-chrome-launcher
+-   karma-coverage-istanbul-reporter
+-   karma-jasmine
+-   karma-jasmine-html-reporter
+-   protractor
+-   @types/jasmine
+-   @types/jasminewd2
 
 ```sh
 $ yarn remove jasmine-core jasmine-spec-reporter karma karma-chrome-launcher karma-coverage-istanbul-reporter karma-jasmine karma-jasmine-html-reporter protractor @types/jasmine @types/jasminewd2

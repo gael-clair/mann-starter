@@ -31,8 +31,8 @@ export class Resource {
 
 To add a new resource, or mongoose model, you have to:
 
--   Create a new file for resource `src/resources/name_of_resource.ts`
--   Create resource interface extending Mongoose Document in resource file
+1.  Create a new file for resource `src/resources/name_of_resource.ts`
+2.  Create resource interface extending Mongoose Document in resource file
 
 ```typescript
 /**
@@ -46,7 +46,7 @@ export interface Sample extends Document {
 }
 ```
 
--   Create Mongoose schema in resource file
+3.  Create Mongoose schema in resource file
 
 ```typescript
 /**
@@ -59,13 +59,13 @@ export const SampleSchema: Schema<Sample> = new Schema({
 });
 ```
 
--   Create a new Resource using [resource class](#resource-class) constructor in resource file
+4.  Create a new Resource using [resource class](#resource-class) constructor in resource file
 
 ```typescript
 export const RESOURCE = new Resource('Samples', SampleSchema, 'samples');
 ```
 
--   Add export of resource in `src/resources/index.ts` file (to let the new resource be handled by resource module)
+5.  Add export of resource in `src/resources/index.ts` file (to let the new resource be handled by resource module)
 
 ```typescript
 import { RESOURCE } from './name_of_resource';
