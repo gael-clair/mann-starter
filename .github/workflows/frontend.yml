@@ -73,7 +73,7 @@ jobs:
           yml: ${{ env.CODECOV_CONFIG }}
           fail_ci_if_error: true
 
-      - name: Run End-to-End testing with coverage
+      - name: Run End-to-End tests with coverage
         run: yarn workspace $PACKAGE e2e:ci
 
       - name: Upload End-to-End tests coverage report to Codecov
