@@ -2,9 +2,9 @@ name: "Package: Backend"
 
 on:
   push:
-    branches:
-      - master
-      - develop
+    # branches:
+    #   - master
+    #   - develop
     paths:
       - "packages/backend/**"
   pull_request:

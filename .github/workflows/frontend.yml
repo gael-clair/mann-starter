@@ -2,9 +2,9 @@ name: "Package: Frontend"
 
 on:
   push:
-    branches:
-      - master
-      - develop
+    # branches:
+    #   - master
+    #   - develop
     paths:
       - "packages/frontend/**"
   pull_request:

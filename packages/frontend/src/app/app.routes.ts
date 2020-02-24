@@ -6,7 +6,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: './site/site.module#SiteModule',
+    loadChildren: () => import('@app/site/site.module').then(m => m.SiteModule),
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
 ];

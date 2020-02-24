@@ -5,8 +5,6 @@ import { BehaviorSubject } from 'rxjs';
 import { AppConfig } from '../models';
 import { envSchema } from '../schemas';
 
-import { LoggerService } from './logger.service';
-
 /**
  * Configuration service to load and validate application configuration.
  */
@@ -21,11 +19,9 @@ export class ConfigurationService {
 
   /**
    * Returns an instance of ConfigurationService.
-   * @param logger logger service
    */
-  constructor(private readonly logger: LoggerService) {
+  constructor() {
     this.validateInput();
-    this.logger.debug('Loaded configuration:', this._configuration.getValue());
   }
 
   /**
