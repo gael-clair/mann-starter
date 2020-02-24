@@ -31,6 +31,9 @@
     -   [Workflow steps](#workflow-steps)
     -   [Github configuration](#github-configuration)
     -   [Checks on Pull Requests](#checks-on-pull-requests)
+    -   [Codecov configuration](#codecov-configuration)
+-   [Git hook](#git-hook)
+-   [Dependencies](#dependencies)
 -   [Licence](#licence)
 -   [Acknowledgements](#acknowledgements)
 
