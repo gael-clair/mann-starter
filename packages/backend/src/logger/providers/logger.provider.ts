@@ -15,12 +15,17 @@ export function getLoggerProviderToken(name: string): string {
  * Returns an array of all logger providers.
  */
 export function createLoggerProviders(): Array<Provider<LoggerService>> {
-  return getLoggers().map(logger => ({
-    provide: getLoggerProviderToken(logger),
-    useFactory: (loggerService: LoggerService): LoggerService => {
-      loggerService.logger = createLogger(logger);
-      return loggerService;
-    },
-    inject: [LoggerService],
-  }));
+  const loggers = getLoggers();
+  if (loggers.length > 0) {
+    return loggers.map(logger => ({
+      provide: getLoggerProviderToken(logger),
+      useFactory: (loggerService: LoggerService): LoggerService => {
+        loggerService.logger = createLogger(logger);
+        return loggerService;
+      },
+      inject: [LoggerService],
+    }));
+  } else {
+    return [];
+  }
 }

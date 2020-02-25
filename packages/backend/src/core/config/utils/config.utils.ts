@@ -14,26 +14,31 @@ import { ENV_SCHEMA } from '../schemas';
  */
 function getAndConvert(key: string, type: string): any {
   const value = process.env[key];
-  switch (type) {
-    case 'boolean': // a boolean is considered at true if value is 'true' or '1' string
-      if (value === 'true' || value === '1') {
-        return true;
-      } else if (value === 'false') {
-        return false;
-      } else {
-        throw new TypeError(`Value could not be converted to boolean: ${value}`);
-      }
-    case 'number':
-      const num = parseInt(value, 10);
-      if (!Number.isNaN(num)) {
-        return num;
-      } else {
-        throw new TypeError(`Value could not be converted to number: ${value}`);
-      }
-    case 'string':
-      return value;
-    default:
-      throw new Error(`Type ${type} is not a valid type`);
+  if (value !== undefined) {
+    switch (type) {
+      case 'boolean': // a boolean is considered at true if value is 'true' or '1' string
+        if (value === 'true') {
+          return true;
+        } else if (value === 'false') {
+          return false;
+        } else {
+          throw new TypeError(`Value could not be converted to boolean: ${value}`);
+        }
+      case 'number':
+        const num = parseInt(value, 10);
+        if (!Number.isNaN(num)) {
+          return num;
+        } else {
+          throw new TypeError(`Value could not be converted to number: ${value}`);
+        }
+      case 'string':
+        return value;
+      default:
+        /* istanbul ignore next */
+        throw new Error(`Type ${type} is not a valid type`);
+    }
+  } else {
+    return value;
   }
 }
 
@@ -70,16 +75,6 @@ export function validateEnvConfig(): void {
  */
 export function getFromEnv(key: string): any {
   return process.env[key];
-}
-
-/**
- * Returns an array from environment by its key.
- * @param key key of the value to get
- */
-export function getArrayFromEnv(key: string): any[] {
-  const value = process.env[key];
-  if (!Array.isArray(value)) throw new TypeError("La valeur demandée n'est pas un Array");
-  return value;
 }
 
 /**

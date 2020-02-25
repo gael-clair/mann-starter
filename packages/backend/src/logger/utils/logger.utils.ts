@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import { blue, green, grey, red, yellow } from 'colors/safe';
 import { existsSync, mkdirSync } from 'fs-extra';
 import * as moment from 'moment';
@@ -9,6 +8,7 @@ import { LOG_FOLDER, LOG_LEVEL, LOG_RETENTION, LOG_ROTATION_SIZE, NODE_ENV } fro
 import { getStringFromEnv } from '@app/core/config/utils';
 
 import { DEFAULT_LOGGER_ID } from '../constants';
+import { NestLikeLoggerService } from '../services';
 
 const loggers: Set<string> = new Set();
 
@@ -45,39 +45,46 @@ function getFileTransport(name: string): DailyRotateFile {
 }
 
 /**
+ * Returns a log formatted log message with colors.
+ * @param param entry to log
+ */
+/* istanbul ignore next */
+function formatLog({ context, level, timestamp, message, ...meta }: any): string {
+  const ts = typeof timestamp !== 'undefined' ? green(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] `) : ' ';
+  let lvl: string;
+  const lvlUC = level.toUpperCase();
+  switch (lvlUC) {
+    case 'INFO':
+      lvl = blue(`[${lvlUC}]`.padEnd(12 - 2));
+      break;
+    case 'ERROR':
+      lvl = red(`[${lvlUC}]`.padEnd(12 - 2));
+      break;
+    case 'WARN':
+      lvl = yellow(`[${lvlUC}]`.padEnd(12 - 2));
+      break;
+    case 'VERBOSE':
+      lvl = grey(`[${lvlUC}]`.padEnd(12 - 2));
+      break;
+    case 'DEBUG':
+      lvl = `[${lvlUC}]`.padEnd(12 - 2);
+      break;
+    default:
+      lvl = `[${lvlUC}]`.padEnd(12 - 2);
+      break;
+  }
+  const ctx = typeof context !== 'undefined' ? yellow(`[${context}]`.padEnd(25 - 2)) : '';
+  const msg = message;
+  const mta = JSON.stringify(meta) !== '{}' ? `\n${''.padStart(53, ' ')}${JSON.stringify(meta)}` : '';
+  return `${ts}${lvl}${ctx}${msg}${mta}`;
+}
+
+/**
  * Returns a console transport with color and message formatting.
  */
 function getConsoleTransport(): winston.transports.ConsoleTransportInstance {
   const consoleTransportOptions: winston.transports.ConsoleTransportOptions = {
-    format: winston.format.printf(({ context, level, timestamp, message, ...meta }) => {
-      const ts = typeof timestamp !== 'undefined' ? green(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] `) : ' ';
-      let lvl: string;
-      const lvlUC = level.toUpperCase();
-      switch (lvlUC) {
-        case 'INFO':
-          lvl = blue(`[${lvlUC}]`.padEnd(12 - 2));
-          break;
-        case 'ERROR':
-          lvl = red(`[${lvlUC}]`.padEnd(12 - 2));
-          break;
-        case 'WARN':
-          lvl = yellow(`[${lvlUC}]`.padEnd(12 - 2));
-          break;
-        case 'VERBOSE':
-          lvl = grey(`[${lvlUC}]`.padEnd(12 - 2));
-          break;
-        case 'DEBUG':
-          lvl = `[${lvlUC}]`.padEnd(12 - 2);
-          break;
-        default:
-          lvl = `[${lvlUC}]`.padEnd(12 - 2);
-          break;
-      }
-      const ctx = typeof context !== 'undefined' ? yellow(`[${context}]`.padEnd(25 - 2)) : '';
-      const msg = message;
-      const mta = JSON.stringify(meta) !== '{}' ? `\n${''.padStart(53, ' ')}${JSON.stringify(meta)}` : '';
-      return `${ts}${lvl}${ctx}${msg}${mta}`;
-    }),
+    format: winston.format.printf(formatLog),
     level: 'debug',
   };
   return new winston.transports.Console(consoleTransportOptions);
@@ -125,67 +132,6 @@ export function createLogger(name: string): winston.Logger {
   } else {
     // Logger with tis name exists, return it
     return winston.loggers.get(nameLC);
-  }
-}
-
-/**
- * A Nestjs like logger service based on a Winston logger.
- */
-class NestLikeLoggerService implements LoggerService {
-  constructor(private readonly logger: winston.Logger) {}
-
-  /**
-   * Logue un message et et un éventuel contexte avec un niveau info.
-   * @param message message à loguer
-   * @param context contexte
-   */
-  public log(message: any, context?: string): void {
-    this.logger.info(message, { context });
-  }
-
-  /**
-   * Logs a message and context at info level.
-   * @param message message to log
-   * @param context context of log
-   */
-  public info(message: any, context?: string): void {
-    this.logger.info(message, { context });
-  }
-
-  /**
-   * Logs a message and context at error level.
-   * @param message message to log
-   * @param context context of log
-   */
-  public error(message: any, trace?: string, context?: string): void {
-    this.logger.error(message, { trace, context });
-  }
-
-  /**
-   * Logs a message and context at warn level.
-   * @param message message to log
-   * @param context context of log
-   */
-  public warn(message: any, context?: string): void {
-    this.logger.warn(message, { context });
-  }
-
-  /**
-   * Logs a message and context at debug level.
-   * @param message message to log
-   * @param context context of log
-   */
-  public debug?(message: any, context?: string): void {
-    this.logger.debug(message, { context });
-  }
-
-  /**
-   * Logs a message and context at verbose level.
-   * @param message message to log
-   * @param context context of log
-   */
-  public verbose?(message: any, context?: string): void {
-    this.logger.verbose(message, { context });
   }
 }
 

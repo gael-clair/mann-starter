@@ -12,7 +12,7 @@ module.exports = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   coverageDirectory: './coverage/ut',
-  collectCoverageFrom: ['src/**/*.ts', '!src/main.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/main.ts', '!src/**/index.ts'],
   reporters: [
     'default',
     [
