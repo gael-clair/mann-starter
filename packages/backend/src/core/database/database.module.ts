@@ -4,7 +4,8 @@ import * as mongoose from 'mongoose';
 
 import { DATABASE_URL } from '@app/core/config/constants';
 import { getStringFromEnv } from '@app/core/config/utils';
-import * as resources from '@app/resources';
+
+
 
 /**
  * Database module in charge of database connection.
@@ -12,6 +13,8 @@ import * as resources from '@app/resources';
 @Module({})
 export class DatabaseModule {
   public static forRoot(): DynamicModule {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const resources = require('@app/resources');
     return {
       module: DatabaseModule,
       imports: [
