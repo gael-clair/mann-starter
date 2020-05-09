@@ -13,6 +13,7 @@
     -   [Resource class](#resource-class)
     -   [Resource creation](#resource-creation)
 -   [Git hook](#git-hook)
+-   [Documentation](#documentation)
 -   [Dependencies](#dependencies)
     -   [Yarn hoisting](#yarn-hoisting)
     -   [Added](#added)
@@ -474,6 +475,7 @@ $ yarn add -D typedoc typedoc-hopper-theme
   }
   ...
 }
+```
 
 ## Dependencies
 
