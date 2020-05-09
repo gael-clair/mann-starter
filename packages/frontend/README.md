@@ -452,6 +452,29 @@ To configure lint-staged you have to:
 }
 ```
 
+## Documentation
+
+Typedoc is used to write documentation.
+
+1. Add dependencies
+
+```sh
+$ yarn add -D typedoc typedoc-hopper-theme
+```
+
+2. Add _"allowSyntheticDefaultImports": true_ to tsconfig.json
+
+3. Add new script to _package.json_
+
+```json
+{
+  ...
+  "scripts": {
+    "doc": "typedoc ./src",
+  }
+  ...
+}
+
 ## Dependencies
 
 ### Yarn hoisting
